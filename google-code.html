@@ -1,0 +1,67 @@
+<script>
+class SMHCounter {
+  constructor() {
+    //this.values = new Array(3600).fill(0);
+	this.values=[];
+	for (let i=0;i<=3600;i++){
+		this.values[i]=0;
+	}
+    this.offset = 0;
+  }
+
+  advance=()=> {
+    this.offset++;
+	console.log("advance");
+    if (this.offset >= 3600) {
+      this.offset = 0;
+    }
+    this.values[this.offset] = 0;
+  }
+
+  inc=()=> {
+     console.log(this.values[this.offset]);
+    this.values[this.offset]++;
+	
+  }
+
+  getCounter(v) {
+	console.log("called: ",this.values);
+    let result = 0;
+    if (v == 's') {
+      result = this.values[this.offset];
+    } else if (v == 'm') {
+      result = 0;
+	
+      for (let x = (this.offset - 60); x < this.offset; x++) {
+		//console.log(x);
+        if (x >= 0) {
+          result += this.values[this.offset];
+        } else {
+		  
+		  console.log("x: "+ x + "values:" + this.values[3600+x]);
+          result += this.values[3600 - x];
+		  console.log("result: ",result);
+        }
+      }
+    } else {
+      result = 0;
+      for (let x = (this.offset - 3600); x < this.offset; x++) {
+        if (x >= 0) {
+          result += this.values[this.offset];
+        } else {
+          result += this.values[3600 - x];
+        }
+      }
+    }
+    return result;
+  }
+}
+
+let SMHCount= new SMHCounter();
+//setInterval(SMHCount.advance, 1000);
+setInterval(SMHCount.inc, 1000);
+console.log(SMHCount.getCounter('m'));
+
+
+
+</script>
